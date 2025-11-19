@@ -6,7 +6,7 @@ CREATE TABLE blogs (
     likes integer DEFAULT 0
 );
 
-insert into blogs (author, url, title, likes) values ('John User', 'testing.com', 'Testing SQL', 23);
+insert into blogs (author, url, title, likes) values ('JohnUser', 'testing.com', 'Testing SQL', 23);
 insert into blogs (url, title) values ('exampleurl.com', 'another blog');
 
 postgres=# select * from blogs;
