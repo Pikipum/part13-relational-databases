@@ -22,7 +22,6 @@ const errorHandler = (err, _req, res, next) => {
     return res.status(404).json({ error: err.message });
   }
   res.json(err.message);
-  next(err);
 };
 
 const tokenExtractor = (req, res, next) => {
@@ -71,14 +70,16 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", tokenExtractor, async (req, res, next) => {
   try {
-    console.log(req.body);
-    const user = await User.findByPk(req.decodedToken.id);
+    const { author, title, url, likes, year } = req.body;
     const blog = await Blog.create({
-      ...req.body,
-      userId: user.id,
-      date: new Date(),
+      author,
+      title,
+      url,
+      likes,
+      year,
+      userId: req.userId,
     });
-    res.json(blog);
+    res.status(201).json(blog);
   } catch (error) {
     next(error);
   }
