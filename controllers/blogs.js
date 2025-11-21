@@ -1,11 +1,10 @@
 import express from "express";
-//import { Blog } from "../models/blog.js";
-//import { User } from "../models/user.js";
-
 import { Blog } from "../models/index.js";
 import { User } from "../models/index.js";
 import { Op } from "sequelize";
 import { sequelize } from "../util/db.js";
+import jwt from "jsonwebtoken";
+import { SECRET } from "../util/config.js";
 
 const router = express.Router();
 
@@ -28,9 +27,10 @@ const errorHandler = (err, _req, res, next) => {
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get("authorization");
-  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+  if (authorization?.toLowerCase().startsWith("bearer ")) {
     try {
-      req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
+      req.decodedToken = jwt.verify(authorization.slice(7), SECRET);
+      req.userId = req.decodedToken.id;
     } catch {
       return res.status(401).json({ error: "token invalid" });
     }

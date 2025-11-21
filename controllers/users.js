@@ -5,18 +5,18 @@ import { User } from "../models/index.js";
 const router = express.Router();
 
 const userErrorHandler = (err, _req, res, next) => {
-  console.error(err.message)
-  if (err.name === 'SequelizeValidationError') {
+  console.error(err.message);
+  if (err.name === "SequelizeValidationError") {
     return res.status(400).json({
-      error: 'Validation failed',
-      details: err.errors.map(e => e.message)
-    })
+      error: "Validation failed",
+      details: err.errors.map((e) => e.message),
+    });
   }
-  if (err.name === 'NotFoundError') {
-    return res.status(404).json({ error: err.message })
+  if (err.name === "NotFoundError") {
+    return res.status(404).json({ error: err.message });
   }
-  return res.status(500).json({ error: err.message })
-}
+  return res.status(500).json({ error: err.message });
+};
 
 router.get("/", async (req, res) => {
   const users = await User.findAll({
@@ -53,7 +53,7 @@ router.put("/:id", async (req, res, next) => {
     await user.save();
     res.json(req.user);
   } catch (error) {
-    next(error);
+    return res.status(400).json({ error });
   }
 });
 

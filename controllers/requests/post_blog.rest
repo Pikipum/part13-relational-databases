@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG51c2VyMSIsImlkIjoyLCJpYXQiOjE3NjM3MjAxMzZ9.hyCQB7pdX8uedYTVl8LSdInFE0fNzP3cOKbnQyGVrxM
+
+{
+  "author": "johnuser1",
+  "title": "My REST Blog",
+  "url": "https://example.com/rest",
+  "likes": 0
+}
