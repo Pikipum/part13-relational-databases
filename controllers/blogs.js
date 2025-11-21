@@ -70,7 +70,7 @@ router.post("/", tokenExtractor, async (req, res, next) => {
 
 router.put("/:id", blogFinder, async (req, res, next) => {
   try {
-    req.blog.likes = req.body.likes;
+    req.blog.likes = req.body.likes + 1;
     await req.blog.save();
     res.json(req.blog);
   } catch (error) {
@@ -86,9 +86,12 @@ router.get("/:id", blogFinder, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", blogFinder, async (req, res, next) => {
+router.delete("/:id", blogFinder, tokenExtractor, async (req, res, next) => {
   try {
-    await req.blog.destroy();
+    const blog = await Blog.findByPk(req.params.id);
+    if (blog && blog.userId == req.userId) {
+      await req.blog.destroy();
+    }
   } catch (error) {
     next(error);
   }
