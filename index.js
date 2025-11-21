@@ -7,6 +7,7 @@ import {
   userErrorHandler,
 } from "./controllers/users.js";
 import { router as loginRouter } from "./controllers/login.js";
+import { router as authorRouter } from "./controllers/authors.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/authors", authorRouter);
 app.use(errorHandler);
 app.use(userErrorHandler);
 

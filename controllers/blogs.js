@@ -4,6 +4,8 @@ import express from "express";
 
 import { Blog } from "../models/index.js";
 import { User } from "../models/index.js";
+import { Op } from "sequelize";
+import { sequelize } from "../util/db.js";
 
 const router = express.Router();
 
@@ -39,6 +41,17 @@ const tokenExtractor = (req, res, next) => {
 };
 
 router.get("/", async (req, res, next) => {
+  const where = {};
+
+  if (req.query.search) {
+    where.title = {
+      [Op.substring]: req.query.search,
+    };
+    where.author = {
+      [Op.substring]: req.query.search,
+    };
+  }
+
   try {
     const blogs = await Blog.findAll({
       attributes: { exclude: ["userId"] },
@@ -46,7 +59,10 @@ router.get("/", async (req, res, next) => {
         model: User,
         attributes: ["name"],
       },
+      order: [["likes", "DESC"]],
+      where,
     });
+
     res.json(blogs);
   } catch (error) {
     next(error);
