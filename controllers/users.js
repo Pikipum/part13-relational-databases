@@ -1,5 +1,5 @@
 import express from "express";
-import { Blog } from "../models/index.js";
+import { Blog, ReadingList } from "../models/index.js";
 import { User } from "../models/index.js";
 
 const router = express.Router();
@@ -20,10 +20,21 @@ const userErrorHandler = (err, _req, res, next) => {
 
 router.get("/", async (req, res) => {
   const users = await User.findAll({
-    include: {
-      model: Blog,
-      attributes: { exclude: ["userId"] },
-    },
+    include: [
+      {
+        model: Blog,
+        attributes: { exclude: ["userId"] },
+      },
+      {
+        model: ReadingList,
+        attributes: ["id", "name"],
+        include: {
+          model: Blog,
+          attributes: ["id", "title", "author"],
+          through: { attributes: ["id", "read"] },
+        },
+      },
+    ],
   });
   res.json(users);
 });

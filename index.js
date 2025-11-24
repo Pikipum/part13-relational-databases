@@ -8,6 +8,7 @@ import {
 } from "./controllers/users.js";
 import { router as loginRouter } from "./controllers/login.js";
 import { router as authorRouter } from "./controllers/authors.js";
+import { router as readingListRouter } from "./controllers/readinglists.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/authors", authorRouter);
+app.use("/api/readinglists", readingListRouter);
 app.use(errorHandler);
 app.use(userErrorHandler);
 

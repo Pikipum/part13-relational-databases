@@ -114,4 +114,4 @@ router.delete("/:id", blogFinder, tokenExtractor, async (req, res, next) => {
   }
 });
 
-export { router, errorHandler };
+export { router, errorHandler, tokenExtractor };
