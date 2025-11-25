@@ -1,11 +1,7 @@
-POST http://localhost:3001/api/blogs
+POST http://localhost:3001/api/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaG5Vc2VyIiwiaWQiOjEsImlhdCI6MTc2NDA2NDgyNn0.0BPz9hScWn1U0_Pnafe1PyOI2C8lgWJqU1oEEdwAeqw
 
 {
-  "author": "JohnUser",
-  "title": "My REST Blog",
-  "url": "https://example.com/rest",
-  "year": 2000,
-  "likes": 0
+
 }

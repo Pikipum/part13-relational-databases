@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 import { sequelize } from "../util/db.js";
 import jwt from "jsonwebtoken";
 import { SECRET } from "../util/config.js";
+import { Session } from "../models/session.js";
 
 const router = express.Router();
 
@@ -24,12 +25,20 @@ const errorHandler = (err, _req, res, next) => {
   res.json(err.message);
 };
 
-const tokenExtractor = (req, res, next) => {
+const tokenExtractor = async (req, res, next) => {
   const authorization = req.get("authorization");
+
   if (authorization?.toLowerCase().startsWith("bearer ")) {
     try {
       req.decodedToken = jwt.verify(authorization.slice(7), SECRET);
-      req.userId = req.decodedToken.id;
+      const session = await Session.findOne({
+        where: { token: authorization.slice(7) },
+      });
+      if (session) {
+        req.userId = req.decodedToken.id;
+      } else {
+        return res.status(401).json({ error: "user disabled?" });
+      }
     } catch {
       return res.status(401).json({ error: "token invalid" });
     }
